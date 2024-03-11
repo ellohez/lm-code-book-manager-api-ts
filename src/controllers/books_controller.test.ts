@@ -138,28 +138,30 @@ describe("POST /api/v1/books endpoint", () => {
 describe("DELETE /api/v1/books{bookId} endpoint", () => {
 	test("status code 200 and delete book called when book ID is found", async () => {
 		// Arrange
-		const results = jest
-			.spyOn(bookService, "deleteBook")
-			.mockResolvedValue(dummyBookData[1] as Book);
+		const results = jest.spyOn(bookService, "deleteBook").mockResolvedValue(1);
+
+		const bookId = 2;
 		// Act
-		const res = await request(app).delete("/api/v1/books/2");
+		const res = await request(app).delete(`/api/v1/books/${bookId}`);
 
 		// Assert
 		expect(results).toBeCalledTimes(1);
-		expect(results).toBeCalledWith(2);
+		expect(results).toBeCalledWith(bookId);
 		expect(res.statusCode).toEqual(200);
-		expect(res.body).toEqual(dummyBookData[1]);
+		expect(res.body.message).toEqual(
+			`Book (ID: ${bookId}) successfully deleted`
+		);
 	});
 	test("status code 404 when book ID is not found", async () => {
 		// Arrange
-		jest
-			.spyOn(bookService, "deleteBook")
-			.mockResolvedValue(undefined as unknown as Book);
+		jest.spyOn(bookService, "deleteBook").mockResolvedValue(0);
 
 		// Act
-		const res = await request(app).delete("/api/v1/books/4");
+		// Use an ID that does not exist
+		const res = await request(app).delete("/api/v1/books/4000");
+
 		// Assert
 		expect(res.statusCode).toEqual(404);
-		expect(res.body).toEqual([]);
-	});
+		expect(res.body.message).toEqual("Book not found");
+	}); 
 });
