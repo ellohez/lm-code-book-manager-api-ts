@@ -142,7 +142,7 @@ describe("DELETE /api/v1/books{bookId} endpoint", () => {
 			.spyOn(bookService, "deleteBook")
 			.mockResolvedValue(dummyBookData[1] as Book);
 		// Act
-		const res = await request(app).post("/api/v1/books/2");
+		const res = await request(app).delete("/api/v1/books/2");
 
 		// Assert
 		expect(results).toBeCalledTimes(1);
@@ -157,7 +157,7 @@ describe("DELETE /api/v1/books{bookId} endpoint", () => {
 			.mockResolvedValue(undefined as unknown as Book);
 
 		// Act
-		const res = await request(app).post("/api/v1/books/4");
+		const res = await request(app).delete("/api/v1/books/4");
 		// Assert
 		expect(res.statusCode).toEqual(404);
 		expect(res.body).toEqual([]);
