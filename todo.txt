@@ -1,0 +1,11 @@
+👉 For this task, we would like you to add a new feature to the 📚 Minimalist Book Manager API which you have been working with.
+User Story: As a user, I want to use the Book Manager API to delete a book using its ID
+ 
+📘 Task 2:
+Oh no! 😭 We've only covered the happy paths in all of our existing endpoints. Can you add some appropriate error handling to deal with some common situations?
+👉  Hint 1: What if someone wants to add a book with an ID for a book that already exists? How can we handle this gracefully?
+👉  Hint 2: What if someone wants to find a book by an ID that doesn't yet exist? How can we improve the API by handling errors gracefully and show a helpful message to the client?
+👉  Hint 3: What if someone mistypes an endpoint URL?
+
+
+
