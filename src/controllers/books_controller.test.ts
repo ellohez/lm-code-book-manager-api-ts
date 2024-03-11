@@ -160,6 +160,6 @@ describe("DELETE /api/v1/books{bookId} endpoint", () => {
 		const res = await request(app).delete("/api/v1/books/4");
 		// Assert
 		expect(res.statusCode).toEqual(404);
-		expect(res.body).toEqual([]);
+		expect(res.body).toEqual("Not found");
 	});
 });

@@ -11,6 +11,7 @@ export const getBook = async (bookId: number) => {
 };
 
 export const saveBook = async (book: Book) => {
+	
 	return Book.create<Book>(book);
 };
 
@@ -24,5 +25,12 @@ export const updateBook = async (bookId: number, book: Book) => {
 };
 
 export const deleteBook = async (bookId: number) => {
-	return Book.findOne();
+	console.log('got to the model')
+	const book = await getBook(bookId)
+	if (book === null){
+		return false
+	}else{
+		book.destroy()
+		return book
+	}
 };

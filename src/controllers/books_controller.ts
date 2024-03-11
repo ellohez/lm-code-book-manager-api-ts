@@ -35,3 +35,17 @@ export const updateBook = async (req: Request, res: Response) => {
 	const book = await bookService.updateBook(bookId, bookUpdateData);
 	res.status(204).json(book);
 };
+
+
+// lab 1 task 1
+export const deleteBook = async (req: Request, res: Response) => {
+	const bookId = req.params.bookId;
+	console.log('got to book  service')
+	const book = await bookService.deleteBook(Number(bookId));
+
+	if (book) {
+		res.json(book).status(200);
+	} else {
+		res.status(404).json("Not found");
+	}
+};
