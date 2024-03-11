@@ -80,18 +80,21 @@ describe("GET /api/v1/books/{bookId} endpoint", () => {
 
 	test("status code successfully 404 for a book that is not found", async () => {
 		// Arrange
-
 		jest
 			.spyOn(bookService, "getBook")
 			// this is a weird looking type assertion!
 			// it's necessary because TS knows we can't actually return unknown here
 			// BUT we want to check that in the event a book is missing we return a 404
 			.mockResolvedValue(undefined as unknown as Book);
+
+		const endpoint = "/api/v1/books/77";
 		// Act
-		const res = await request(app).get("/api/v1/books/77");
+		const res = await request(app).get(endpoint);
 
 		// Assert
 		expect(res.statusCode).toEqual(404);
+		expect(res.body.message).toEqual("Resource not found");
+		expect(res.body.path).toEqual(endpoint);
 	});
 
 	test("controller successfully returns book object as JSON", async () => {
@@ -111,9 +114,14 @@ describe("GET /api/v1/books/{bookId} endpoint", () => {
 describe("POST /api/v1/books endpoint", () => {
 	test("status code successfully 201 for saving a valid book", async () => {
 		// Act
-		const res = await request(app)
-			.post("/api/v1/books")
-			.send({ bookId: 3, title: "Fantastic Mr. Fox", author: "Roald Dahl" });
+		const res = await request(app).post("/api/v1/books").send({
+			bookId: 3,
+			title: "Fantastic Mr. Fox",
+			author: "Roald Dahl",
+			description: "Very foxy"
+		});
+
+		console.log("res.body :>> ", res.body);
 
 		// Assert
 		expect(res.statusCode).toEqual(201);
@@ -132,6 +140,7 @@ describe("POST /api/v1/books endpoint", () => {
 
 		// Assert
 		expect(res.statusCode).toEqual(400);
+		expect(res.body.message).toEqual("No book ID provided");
 	});
 });
 
