@@ -67,7 +67,7 @@ describe("GET /api/v1/books endpoint", () => {
 describe("GET /api/v1/books/{bookId} endpoint", () => {
 	test("status code successfully 200 for a book that is found", async () => {
 		// Arrange
-		const mockGetBook = jest
+		jest
 			.spyOn(bookService, "getBook")
 			.mockResolvedValue(dummyBookData[1] as Book);
 
@@ -140,6 +140,27 @@ describe("POST /api/v1/books endpoint", () => {
 		expect(res.statusCode).toEqual(400);
 		expect(res.body.message).toEqual("No book ID provided");
 	});
+
+	test("status code 409 if book ID already exists", async () => {
+		// Arrange
+		const saveBookResults = jest.spyOn(bookService, "saveBook");
+		jest
+			.spyOn(bookService, "getBook")
+			.mockResolvedValue(dummyBookData[0] as Book);
+
+		// Act
+		const res = await request(app).post("/api/v1/books").send({
+			bookId: 1,
+			title: "This is a duplicate book ID",
+			author: "Anonymous",
+			description: "This should not save"
+		});
+
+		// Assert
+		expect(res.statusCode).toEqual(409);
+		expect(res.body.message).toEqual("ID already exists");
+		expect(saveBookResults).not.toBeCalled();
+	});
 });
 
 describe("DELETE /api/v1/books{bookId} endpoint", () => {
@@ -170,5 +191,5 @@ describe("DELETE /api/v1/books{bookId} endpoint", () => {
 		// Assert
 		expect(res.statusCode).toEqual(404);
 		expect(res.body.message).toEqual("Book not found");
-	}); 
+	});
 });

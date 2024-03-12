@@ -35,10 +35,8 @@ export const saveBook = async (req: Request, res: Response) => {
 		return;
 	}
 	const bookId = req.body.bookId;
-	const book = await bookService.getBook(Number(bookId));
 
-	console.log("bookId :>> ", bookId);
-	console.log("book :>> ", book);
+	const book = await bookService.getBook(Number(bookId));
 
 	if (book?.bookId === bookId) {
 		res.status(409).json({
@@ -48,6 +46,8 @@ export const saveBook = async (req: Request, res: Response) => {
 			suggestions: "Please select a new ID for this book",
 			path: req.originalUrl
 		} as errorObject);
+
+		return;
 	}
 
 	try {
@@ -66,6 +66,7 @@ export const updateBook = async (req: Request, res: Response) => {
 	const bookId = Number.parseInt(req.params.bookId);
 
 	const book = await bookService.updateBook(bookId, bookUpdateData);
+
 	res.status(204).json(book);
 };
 
