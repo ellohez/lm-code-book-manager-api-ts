@@ -121,8 +121,6 @@ describe("POST /api/v1/books endpoint", () => {
 			description: "Very foxy"
 		});
 
-		console.log("res.body :>> ", res.body);
-
 		// Assert
 		expect(res.statusCode).toEqual(201);
 	});

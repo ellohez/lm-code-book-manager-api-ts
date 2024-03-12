@@ -37,9 +37,10 @@ export const saveBook = async (req: Request, res: Response) => {
 	const bookId = req.body.bookId;
 	const book = await bookService.getBook(Number(bookId));
 
+	console.log("bookId :>> ", bookId);
 	console.log("book :>> ", book);
 
-	if (book) {
+	if (book?.bookId === bookId) {
 		res.status(409).json({
 			status: 409,
 			message: "ID already exists",
@@ -76,7 +77,12 @@ export const deleteBook = async (req: Request, res: Response) => {
 		numRows = await bookService.deleteBook(bookId);
 
 		if (numRows !== 1) {
-			res.status(404).json({ message: "Book not found" });
+			res.status(404).json({
+				status: 404,
+				message: "Book not found",
+				details: `Book with ID ${bookId} does not exist`,
+				suggestions: "Please check ID and try again"
+			} as errorObject);
 			return;
 		}
 		res
