@@ -65,8 +65,18 @@ export const updateBook = async (req: Request, res: Response) => {
 	const bookUpdateData = req.body;
 	const bookId = Number.parseInt(req.params.bookId);
 
-	const book = await bookService.updateBook(bookId, bookUpdateData);
+	const bookExists = await bookService.getBook(bookId);
+	if (!bookExists || bookExists.bookId !== bookId) {
+		res.status(404).json({
+			status: 404,
+			message: "Book not found",
+			details: `Book with ID ${bookId} does not exist`,
+			suggestions: "Please check ID and try again"
+		} as errorObject);
+		return;
+	}
 
+	const book = await bookService.updateBook(bookId, bookUpdateData);
 	res.status(204).json(book);
 };
 

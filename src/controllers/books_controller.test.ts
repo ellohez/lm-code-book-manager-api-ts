@@ -183,6 +183,24 @@ describe("PUT api/v1/books/:bookId", () => {
 		expect(res.statusCode).toEqual(204);
 		expect(updateBookFunction).toBeCalledTimes(1);
 	});
+
+	test("status code 404 if book with ID does not exist and updateBook not called", async () => {
+		// Arrange
+		const updateBookFunction = jest.spyOn(bookService, "updateBook");
+		jest.spyOn(bookService, "getBook").mockResolvedValue(null);
+
+		// Act
+		const res = await request(app).put("/api/v1/books/100").send({
+			title: "Brave New World",
+			author: "Aldous Huxley",
+			description: "Dystopia Warning!"
+		});
+
+		// Assert
+		expect(res.statusCode).toEqual(404);
+		expect(updateBookFunction).not.toBeCalled();
+	});
+	
 });
 
 describe("DELETE /api/v1/books{bookId} endpoint", () => {
