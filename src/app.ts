@@ -7,6 +7,8 @@ export const app = express();
 
 app.use(express.json());
 app.use(baseUrl, router);
+// Add a catch all error handler for routes not found 
+// to return with a sensible user-friendly error message
 app.use((req, res, next) => {
 	res.status(404).json({
 		status: 404,
