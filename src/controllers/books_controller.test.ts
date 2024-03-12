@@ -4,6 +4,7 @@ import { Book } from "../models/book";
 
 import * as bookService from "../services/books";
 import exp from "constants";
+import { updateBook } from "./books_controller";
 jest.mock("../services/books");
 
 afterEach(() => {
@@ -15,15 +16,15 @@ const dummyBookData = [
 		bookId: 1,
 		title: "The Hobbit",
 		author: "J. R. R. Tolkien",
-		description: "Someone finds a nice piece of jewellery while on holiday.",
+		description: "Someone finds a nice piece of jewellery while on holiday."
 	},
 	{
 		bookId: 2,
 		title: "The Shop Before Life",
 		author: "Neil Hughes",
 		description:
-			"Before being born, each person must visit the magical Shop Before Life, where they choose what kind of person they will become down on Earth...",
-	},
+			"Before being born, each person must visit the magical Shop Before Life, where they choose what kind of person they will become down on Earth..."
+	}
 ];
 
 describe("GET /api/v1/books endpoint", () => {
@@ -160,6 +161,27 @@ describe("POST /api/v1/books endpoint", () => {
 		expect(res.statusCode).toEqual(409);
 		expect(res.body.message).toEqual("ID already exists");
 		expect(saveBookResults).not.toBeCalled();
+	});
+});
+
+describe("PUT api/v1/books/:bookId", () => {
+	test("status code 204 - and updateBook called when book ID is found", async () => {
+		// Arrange
+		const updateBookFunction = jest.spyOn(bookService, "updateBook");
+		jest
+			.spyOn(bookService, "getBook")
+			.mockResolvedValue(dummyBookData[0] as Book);
+
+		// Act
+		const res = await request(app).put("/api/v1/books/1").send({
+			title: "Brave New World",
+			author: "Aldous Huxley",
+			description: "Dystopia Warning!"
+		});
+
+		// Assert
+		expect(res.statusCode).toEqual(204);
+		expect(updateBookFunction).toBeCalledTimes(1);
 	});
 });
 
