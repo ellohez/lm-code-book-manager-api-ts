@@ -25,11 +25,10 @@ export const updateBook = async (bookId: number, book: Book) => {
 
 // User story - Delete Book by its ID
 export const deleteBook = async (bookId: number) => {
-	// return Book.findOne();
 	const numRows = await Book.destroy({
 		where: {
 			bookId: bookId
 		}
-	}); 
+	});
 	return numRows;
 };

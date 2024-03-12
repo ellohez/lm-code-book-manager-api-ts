@@ -3,8 +3,6 @@ import { app } from "../app";
 import { Book } from "../models/book";
 
 import * as bookService from "../services/books";
-import exp from "constants";
-import { updateBook } from "./books_controller";
 jest.mock("../services/books");
 
 afterEach(() => {
