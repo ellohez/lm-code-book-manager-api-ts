@@ -3,7 +3,7 @@
 	"version": "1.0.0",
 	"description": "A repository used to demonstrate API creation using NodeJS",
 	"scripts": {
-		"start": "nodemon src/server.ts",
+		"start": "set NODE_ENV=dev&& nodemon src/server.ts",
 		"test": "jest --watch"
 	},
 	"repository": {
