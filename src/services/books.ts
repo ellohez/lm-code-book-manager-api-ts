@@ -11,8 +11,11 @@ export const getBook = async (bookId: number) => {
 };
 
 export const saveBook = async (book: Book) => {
-	
-	return Book.create<Book>(book);
+	if(!(await getBook(book.bookId))){
+		return Book.create<Book>(book)
+	} else {
+		return "that ID is all ready in use"
+	}
 };
 
 // User Story 4 - Update Book By Id Solution
@@ -25,7 +28,6 @@ export const updateBook = async (bookId: number, book: Book) => {
 };
 
 export const deleteBook = async (bookId: number) => {
-	console.log('got to the model')
 	const book = await getBook(bookId)
 	if (book === null){
 		return false
