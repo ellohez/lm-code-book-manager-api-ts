@@ -19,10 +19,14 @@ export const getBook = async (req: Request, res: Response) => {
 
 export const saveBook = async (req: Request, res: Response) => {
 	const bookToBeSaved = req.body;
+	// console.log(req)
+	// console.log(bookToBeSaved)
 	try {
 		const book = await bookService.saveBook(bookToBeSaved);
+		// console.log(book)
 		res.status(201).json(book);
 	} catch (error) {
+		// console.log(error)
 		res.status(400).json({ message: (error as Error).message });
 	}
 };
